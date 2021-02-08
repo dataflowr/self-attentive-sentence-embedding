@@ -1,0 +1,29 @@
+cuda: True
+seed: 1111 #random seed
+class_number: 5 #number of classes
+
+model:
+  emsize: 200 #size of word embeddings
+  nhid: 300 #number of hidden units per layer
+  nlayers: 2 #number of layers in BiLSTM
+  attention_unit: 350 #number of attention unit
+  attention_hops: 4 #number of attention hops, for multi-hop attention model
+  dropout: 0.5 #dropout applied to layers (0 = no dropout)
+  clip: 0.5 #clip to prevent the too large grad in LSTM
+  nfc: 300 #hidden (fully connected) layer size for classifier MLP
+
+training:
+  lr: .001 #initial learning rate
+  optimizer: 'Adam' #type of optimizer
+  epochs: 5 #upper epoch limit
+  log_interval: 20 #report interval
+  batch_size: 50 #batch size for training
+  penalization_coeff: 1 #the penalization coefficient
+
+data:
+  save: #path to save the final model
+  dictionary: #path to save the dictionary, for faster corpus loading
+  word_vector: #path for pre-trained word vectors (e.g. GloVe), should be a PyTorch model.
+  train_data: #location of the training data, should be a json file
+  val_data: #location of the development data, should be a json file
+  test_data: #location of the test data, should be a json file
