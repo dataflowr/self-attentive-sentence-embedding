@@ -1,0 +1,3 @@
+# python crap
+*.pyc
+__pycache__/
