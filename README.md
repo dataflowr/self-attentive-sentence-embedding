@@ -13,7 +13,7 @@ python tokenizer-yelp.py --input [Yelp dataset] --output [output path, will be a
 
 A small version of the tokenized dataset is available [here](https://www.di.ens.fr/~lelarge/small_yelp.zip).
 
-In order to get the Glove vectors as PyTorch tensors, you can use [torchtext](https://github.com/pytorch/text). For convenience, I did it for [glove.6B.200d.txt.pt](https://www.di.ens.fr/~lelarge/glove.6B.200d.txt.pt).
+In order to get the Glove vectors as PyTorch tensors, you can use [torchtext](https://github.com/pytorch/text), see [here](https://github.com/dataflowr/self-attentive-sentence-embedding/glove_tensors.ipynb). For convenience, I did it for [glove.6B.200d.txt.pt](https://www.di.ens.fr/~lelarge/glove.6B.200d.txt.pt).
 
 # Running on Colab
 
