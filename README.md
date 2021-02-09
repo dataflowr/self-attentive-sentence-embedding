@@ -13,11 +13,11 @@ python tokenizer-yelp.py --input [Yelp dataset] --output [output path, will be a
 
 A small version of the tokenized dataset is available [here](https://www.di.ens.fr/~lelarge/small_yelp.zip).
 
-In order to get the Glove vectors as PyTorch tensors, you can use [torchtext](https://github.com/pytorch/text), see [here](https://github.com/dataflowr/self-attentive-sentence-embedding/glove_tensors.ipynb). For convenience, I did it for [glove.6B.200d.txt.pt](https://www.di.ens.fr/~lelarge/glove.6B.200d.txt.pt).
+In order to get the Glove vectors as PyTorch tensors, you can use [torchtext](https://github.com/pytorch/text), see [here](https://github.com/dataflowr/self-attentive-sentence-embedding/blob/main/glove_tensors.ipynb). For convenience, I did it for [glove.6B.200d.txt.pt](https://www.di.ens.fr/~lelarge/glove.6B.200d.txt.pt).
 
 # Running on Colab
 
-Now, provided you downloaded everything on [Colab](https://github.com/dataflowr/self-attentive-sentence-embedding/sase_colab.ipynb), the training can be done via:
+Now, provided you downloaded everything on [Colab](https://github.com/dataflowr/self-attentive-sentence-embedding/blob/main/sase_colab.ipynb), the training can be done via:
 ```
 python train.py data.train_data="/content/small/train_tok.json" data.val_data="/content/small/val_tok.json" data.test_data="/content/small/test_tok.json" data.dictionary="/content/small/dict_review_short.json" data.word_vector="content/glove.6B.200d.txt.pt" data.save="/content/self-attentive-sentence-embedding/models/model-small-6B.pt"
 ```
