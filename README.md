@@ -17,7 +17,7 @@ In order to get the Glove vectors as PyTorch tensors, you can use [torchtext](ht
 
 # Running on Colab
 
-Now, provided you downloaded everything on Colab, the training can be done via:
+Now, provided you downloaded everything on [Colab](https://github.com/dataflowr/self-attentive-sentence-embedding/sase_colab.ipynb), the training can be done via:
 ```
 python train.py data.train_data="/content/small/train_tok.json" data.val_data="/content/small/val_tok.json" data.test_data="/content/small/test_tok.json" data.dictionary="/content/small/dict_review_short.json" data.word_vector="content/glove.6B.200d.txt.pt" data.save="/content/self-attentive-sentence-embedding/models/model-small-6B.pt"
 ```
