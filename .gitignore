@@ -1,3 +1,5 @@
 # python crap
 *.pyc
 __pycache__/
+
+*.pt
