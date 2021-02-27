@@ -1,0 +1,131 @@
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  hydra_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][HYDRA] %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+    root:
+      level: INFO
+      handlers:
+      - console
+    loggers:
+      logging_example:
+        level: DEBUG
+    disable_existing_loggers: false
+  job_logging:
+    version: 1
+    formatters:
+      simple:
+        format: '[%(asctime)s][%(name)s][%(levelname)s] - %(message)s'
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: simple
+        stream: ext://sys.stdout
+      file:
+        class: logging.FileHandler
+        formatter: simple
+        filename: ${hydra.job.name}.log
+    root:
+      level: INFO
+      handlers:
+      - console
+      - file
+    disable_existing_loggers: false
+  sweeper:
+    _target_: hydra._internal.core_plugins.basic_sweeper.BasicSweeper
+    max_batch_size: null
+  launcher:
+    _target_: hydra._internal.core_plugins.basic_launcher.BasicLauncher
+  help:
+    app_name: ${hydra.job.name}
+    header: '${hydra.help.app_name} is powered by Hydra.
+
+      '
+    footer: 'Powered by Hydra (https://hydra.cc)
+
+      Use --hydra-help to view Hydra specific help
+
+      '
+    template: '${hydra.help.header}
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (group=option)
+
+
+      $APP_CONFIG_GROUPS
+
+
+      == Config ==
+
+      Override anything in the config (foo.bar=value)
+
+
+      $CONFIG
+
+
+      ${hydra.help.footer}
+
+      '
+  hydra_help:
+    hydra_help: ???
+    template: 'Hydra (${hydra.runtime.version})
+
+      See https://hydra.cc for more info.
+
+
+      == Flags ==
+
+      $FLAGS_HELP
+
+
+      == Configuration groups ==
+
+      Compose your configuration from those groups (For example, append hydra/job_logging=disabled
+      to command line)
+
+
+      $HYDRA_CONFIG_GROUPS
+
+
+      Use ''--cfg hydra'' to Show the Hydra config.
+
+      '
+  output_subdir: .hydra
+  overrides:
+    hydra: []
+    task:
+    - data.train_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/val_tok.json
+    - data.val_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/train_tok.json
+    - data.test_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/test_tok.json
+    - data.dictionary=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/dictionary
+    - data.word_vector=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/content/glove.6B.200d.txt.pt
+    - data.save=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models
+  job:
+    name: train
+    override_dirname: data.dictionary=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/dictionary,data.save=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models,data.test_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/test_tok.json,data.train_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/val_tok.json,data.val_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/train_tok.json,data.word_vector=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/content/glove.6B.200d.txt.pt
+    id: ???
+    num: ???
+    config_name: config
+    env_set: {}
+    env_copy: []
+    config:
+      override_dirname:
+        kv_sep: '='
+        item_sep: ','
+        exclude_keys: []
+  runtime:
+    version: 1.0.6
+    cwd: /Data/pls_do_not_delete/Project-self-attentive-sentence-embedding
+  verbose: false

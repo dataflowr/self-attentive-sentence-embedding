@@ -117,6 +117,7 @@ def train(epoch_number ,cfg):
         with open(cfg.data.save, 'wb') as f:
             torch.save(model, f)
         f.close()
+        #torch.save(model.state_dict(), cfg.data.save)
         best_val_loss = val_loss
     else:  # if loss doesn't go down, divide the learning rate by 5.
         for param_group in optimizer.param_groups:
@@ -133,6 +134,7 @@ def train(epoch_number ,cfg):
 
 @hydra.main(config_name="config")
 def main(cfg):
+    print(get_config(cfg))
     # Set the random seed manually for reproducibility.
     torch.manual_seed(cfg.seed)
     if torch.cuda.is_available():
@@ -143,6 +145,7 @@ def main(cfg):
     random.seed(cfg.seed)
 
     # Load Dictionary
+    print(cfg.data.train_data)
     assert os.path.exists(cfg.data.train_data)
     assert os.path.exists(cfg.data.val_data)
     print('Begin to load the dictionary.')
