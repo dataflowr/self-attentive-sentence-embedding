@@ -1,6 +1,0 @@
-- data.train_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/val_tok.json
-- data.val_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/train_tok.json
-- data.test_data=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/test_tok.json
-- data.dictionary=dictionary
-- data.word_vector=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/content/glove.6B.200d.txt.pt
-- data.save=/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models

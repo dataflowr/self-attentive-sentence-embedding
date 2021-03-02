@@ -1,6 +1,0 @@
-- data.train_data=content/small/train_tok.json
-- data.val_data=content/small/val_tok.json
-- data.test_data=content/small/test_tok.json
-- data.dictionary=content/small/dict_review_short.json
-- data.word_vector=content/glove.6B.200d.txt.pt
-- data.save=content/self-attentive-sentence-embedding/models/model-small-6B.pt
