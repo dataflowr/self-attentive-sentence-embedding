@@ -131,6 +131,14 @@ def train(epoch_number ,cfg):
         torch.save(model, f)
     f.close()
 
+    if(cfg.training.scheduler.using_scheduler):
+        if(cfg.training.scheduler.name == "ReduceLROnPlateau"):
+            scheduler.step(val_loss)
+        elif cfg.training.scheduler.name == "StepLR":
+            scheduler.step()
+            
+
+
 
 @hydra.main(config_name="config")
 def main(cfg):
@@ -166,7 +174,7 @@ def main(cfg):
         'nlayers': cfg.model.nlayers,
         'nhid': cfg.model.nhid,
         'ninp': cfg.model.emsize,
-        'pooling': 'all',
+        'pooling': cfg.model.pooling,
         'attention-unit': cfg.model.attention_unit,
         'attention-hops': cfg.model.attention_hops,
         'nfc': cfg.model.nfc,
@@ -187,14 +195,30 @@ def main(cfg):
 
     global criterion 
     global optimizer
+
     criterion = nn.CrossEntropyLoss()
     if cfg.training.optimizer == 'Adam':
         optimizer = optim.Adam(model.parameters(), lr=cfg.training.lr, betas=[0.9, 0.999], eps=1e-8, weight_decay=0)
     elif cfg.training.optimizer == 'SGD':
         optimizer = optim.SGD(model.parameters(), lr=cfg.training.lr, momentum=0.9, weight_decay=0.01)
+    elif cfg.training.optimizer == 'RMSprop':
+        torch.optim.RMSprop(model.parameters(), lr=cfg.training.lr, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0, centered=False)
     else:
         raise Exception('For other optimizers, please add it yourself. '
-                        'supported ones are: SGD and Adam.')
+                        'supported ones are: SGD, Adam and RMSprop.')
+
+    # Scheduler initialization:
+    if cfg.training.scheduler.using_scheduler:
+        global scheduler
+        if cfg.training.scheduler.name == "ReduceLROnPlateau":
+            scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=cfg.training.scheduler.factor, patience=cfg.training.scheduler.patience, verbose=True, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
+        elif cfg.training.scheduler.name == "StepLR":
+            scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size = cfg.training.scheduler.step_size, gamma=0.1, last_epoch=-1, verbose=True)
+        else:
+            raise Exception('For other schedulers, please add it yourself. '
+                        'supported ones are: ReduceLROnPlateau and StepLR.')
+
+
     print('Begin to load data.')
     global data_train 
     data_train = open(cfg.data.train_data).readlines()

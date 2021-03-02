@@ -4,24 +4,32 @@ class_number: 5 #number of classes
 
 model:
   emsize: 200 #size of word embeddings
-  nhid: 300 #number of hidden units per layer
+  nhid: 300 #number of hidden units per layer, x2 for the biLSTM.
   nlayers: 2 #number of layers in BiLSTM
-  attention_unit: 350 #number of attention unit
-  attention_hops: 4 #number of attention hops, for multi-hop attention model
+  pooling: 'all' # There is three possible values, 'mean', 'max' and 'all'. Using 'mean' and 'max' removes the self attention mechanism and replaces it with a mean or max pooling.
+  attention_unit: 350 #number of attention unit. Number of rows of the ws2 matrix.
+  attention_hops: 4 #number of attention hops, for multi-hop attention model. Number of columns of the ws2 matrix.
   dropout: 0.5 #dropout applied to layers (0 = no dropout)
   clip: 0.5 #clip to prevent the too large grad in LSTM
   nfc: 300 #hidden (fully connected) layer size for classifier MLP
 
 training:
   lr: .001 #initial learning rate
-  optimizer: 'Adam' #type of optimizer
+  optimizer: 'Adam' #type of optimizer, 'Adam', 'SGD', 'RMSprop'
+  scheduler: 
+    using_scheduler: True # Indicates if we want to use a scheduler by setting this value to true
+    name: 'ReduceLROnPlateau' #type of Scheduler 'ReduceLROnPlateau' and 'StepLR'
+    factor: 0.5 #the factor of 'ReduceLROnPlateau' when reducing the LR.
+    patience: 1 #the patience of 'ReduceLROnPlateau' when reducing the LR.
+    step_size: 1 #the step of 'StepLR'
+
   epochs: 5 #upper epoch limit
   log_interval: 20 #report interval
   batch_size: 50 #batch size for training
   penalization_coeff: 1 #the penalization coefficient
 
 data:
-  save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/test.pkl" #path to save the final model
+  save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/with_sched.pkl" #path to save the final model
   dictionary: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/dict_review_short.json" #path to save the dictionary, for faster corpus loading
   word_vector: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/content/glove.6B.200d.txt.pt" #path for pre-trained word vectors (e.g. GloVe), should be a PyTorch model.
   train_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/train_tok.json" #location of the training data, should be a json file
