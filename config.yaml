@@ -23,13 +23,13 @@ training:
     patience: 1 #the patience of 'ReduceLROnPlateau' when reducing the LR.
     step_size: 1 #the step of 'StepLR'
 
-  epochs: 5 #upper epoch limit
+  epochs: 10 #upper epoch limit
   log_interval: 20 #report interval
   batch_size: 50 #batch size for training
   penalization_coeff: 1 #the penalization coefficient
 
 data:
-  save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/with_sched.pkl" #path to save the final model
+  save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/with_sched2.pkl" #path to save the final model
   dictionary: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/dict_review_short.json" #path to save the dictionary, for faster corpus loading
   word_vector: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/content/glove.6B.200d.txt.pt" #path for pre-trained word vectors (e.g. GloVe), should be a PyTorch model.
   train_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/train_tok.json" #location of the training data, should be a json file
