@@ -18,6 +18,9 @@ outputs/
 # Models
 models/
 
+# Ignore all the Heatmaps created
+heatmaps/
+
 # Content and data:
 content/
 small/
