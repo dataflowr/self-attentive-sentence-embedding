@@ -73,6 +73,7 @@ def train(epoch_number ,cfg):
     start_time = time.time()
     for batch, i in enumerate(range(0, len(data_train), cfg.training.batch_size)):
         data, targets = package(data_train[i:i+cfg.training.batch_size])
+
         if cfg.cuda:
             data = data.cuda()
             targets = targets.cuda()
@@ -84,6 +85,7 @@ def train(epoch_number ,cfg):
             attentionT = torch.transpose(attention, 1, 2).contiguous()
             extra_loss = Frobenius(torch.bmm(attention, attentionT) - I[:attention.size(0)])
             loss += cfg.training.penalization_coeff * extra_loss
+
         optimizer.zero_grad()
         loss.backward()
 
@@ -98,6 +100,15 @@ def train(epoch_number ,cfg):
                   epoch_number, batch, len(data_train) // cfg.training.batch_size,
                   elapsed * 1000 / cfg.training.log_interval, total_loss / cfg.training.log_interval,
                   total_pure_loss / cfg.training.log_interval))
+
+
+            # Saves the results in train_logs
+            with open("train_logs/" + cfg.data.save.split("/")[-1] + ".res", "a") as res_file:
+                    res_file.write('| epoch {:3d} | {:5d}/{:5d} batches | ms/batch {:5.2f} | loss {:5.4f} | pure loss {:5.4f}'.format(
+                                   epoch_number, batch, len(data_train) // cfg.training.batch_size,
+                                   elapsed * 1000 / cfg.training.log_interval, total_loss / cfg.training.log_interval,
+                                   total_pure_loss / cfg.training.log_interval))  
+
             total_loss = 0
             total_pure_loss = 0
             start_time = time.time()
@@ -119,9 +130,9 @@ def train(epoch_number ,cfg):
         f.close()
         #torch.save(model.state_dict(), cfg.data.save)
         best_val_loss = val_loss
-    else:  # if loss doesn't go down, divide the learning rate by 5.
-        for param_group in optimizer.param_groups:
-            param_group['lr'] = param_group['lr'] * 0.2
+    #else:  # if loss doesn't go down, divide the learning rate by 5.
+        #for param_group in optimizer.param_groups:
+            #param_group['lr'] = param_group['lr'] * 0.2
     if not best_acc or acc > best_acc:
         with open(cfg.data.save[:-3]+'.best_acc.pt', 'wb') as f:
             torch.save(model, f)
@@ -136,6 +147,9 @@ def train(epoch_number ,cfg):
             scheduler.step(val_loss)
         elif cfg.training.scheduler.name == "StepLR":
             scheduler.step()
+
+    for param_group in optimizer.param_groups:
+        print(param_group['lr'])
             
 
 
@@ -180,7 +194,8 @@ def main(cfg):
         'nfc': cfg.model.nfc,
         'dictionary': dictionary,
         'word-vector': cfg.data.word_vector,
-        'class-number': cfg.class_number
+        'class-number': cfg.class_number,
+        'require_checkpoint': cfg.require_checkpoint
     })
     if cfg.cuda:
         model = model.cuda()
@@ -208,6 +223,7 @@ def main(cfg):
                         'supported ones are: SGD, Adam and RMSprop.')
 
     # Scheduler initialization:
+    print(cfg.training.scheduler.name)
     if cfg.training.scheduler.using_scheduler:
         global scheduler
         if cfg.training.scheduler.name == "ReduceLROnPlateau":

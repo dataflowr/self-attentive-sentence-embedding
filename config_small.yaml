@@ -20,7 +20,7 @@ training:
   scheduler: 
     using_scheduler: True # Indicates if we want to use a scheduler by setting this value to true
     name: 'ReduceLROnPlateau' #type of Scheduler 'ReduceLROnPlateau' and 'StepLR'
-    factor: 0.2 #the factor of 'ReduceLROnPlateau' when reducing the LR.
+    factor: 0.5 #the factor of 'ReduceLROnPlateau' when reducing the LR.
     patience: 1 #the patience of 'ReduceLROnPlateau' when reducing the LR.
     step_size: 1 #the step of 'StepLR'
 
@@ -30,9 +30,9 @@ training:
   penalization_coeff: 1 #the penalization coefficient
 
 data:
-  save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/with_sched_big.pkl" #path to save the final model
-  dictionary: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/big/dict_review.json" #path to save the dictionary, for faster corpus loading
+  save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/with_sched3.pkl" #path to save the final model
+  dictionary: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/dict_review_short.json" #path to save the dictionary, for faster corpus loading
   word_vector: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/content/glove.6B.200d.txt.pt" #path for pre-trained word vectors (e.g. GloVe), should be a PyTorch model.
-  train_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/big/x000.json" #location of the training data, should be a json file
-  val_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/big/x001.json" #location of the development data, should be a json file
-  test_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/big/x002.json" #location of the test data, should be a json file
+  train_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/train_tok.json" #location of the training data, should be a json file
+  val_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/val_tok.json" #location of the development data, should be a json file
+  test_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/test_tok.json" #location of the test data, should be a json file
