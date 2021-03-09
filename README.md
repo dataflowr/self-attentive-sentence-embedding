@@ -1,23 +1,19 @@
-# A Structured Self-attentive Sentence Embedding
+# Self-attentive Sentence Embedding
 
-Mini-project for the [deep learning course](http://dataflowr.com/) based on [A Structured Self-attentive Sentence Embedding](https://arxiv.org/abs/1703.03130) by Lin et al.
+We submitted tree model.
 
-The code has been adapted from [the repo of Freda Shi](https://github.com/ExplorerFreda/Structured-Self-Attentive-Sentence-Embedding).
+-The first one called yelp_all_model.ipynb is just a colab to train the model on all the yelp dataset
 
-# Preprocessing
+-The second one bert.ipynb is a bert one containing also a heatmap implementation.
 
-To generate the dataset, you will need to install [spacy](https://spacy.io/usage) and run:
-```
-python tokenizer-yelp.py --input [Yelp dataset] --output [output path, will be a json file] --dict [output dictionary path, will be a json file]
-```
+-And a third one longtransformer.py using Longformers to use all the words in the text(not only the 512 first ones)
 
-A small version of the tokenized dataset is available [here](https://www.di.ens.fr/~lelarge/small_yelp.zip).
+We add :
 
-In order to get the Glove vectors as PyTorch tensors, you can use [torchtext](https://github.com/pytorch/text), see [here](https://github.com/dataflowr/self-attentive-sentence-embedding/blob/main/glove_tensors.ipynb). For convenience, I did it for [glove.6B.200d.txt.pt](https://www.di.ens.fr/~lelarge/glove.6B.200d.txt.pt).
+-a heatmap.py file where a base implementation approach of a heatmap is proposed 
+-sample.tex is a heatmap tex file for a sentence we try on the bert model
 
-# Running on Colab
+TO visualize the heatmap, you need to copy the sample.tex in Overleaf application and compile it
 
-Now, provided you downloaded everything on [Colab](https://github.com/dataflowr/self-attentive-sentence-embedding/blob/main/sase_colab.ipynb), the training can be done via:
-```
-python train.py data.train_data="/content/small/train_tok.json" data.val_data="/content/small/val_tok.json" data.test_data="/content/small/test_tok.json" data.dictionary="/content/small/dict_review_short.json" data.word_vector="content/glove.6B.200d.txt.pt" data.save="/content/self-attentive-sentence-embedding/models/model-small-6B.pt"
-```
+
+
