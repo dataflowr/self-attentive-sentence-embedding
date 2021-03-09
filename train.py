@@ -101,13 +101,6 @@ def train(epoch_number ,cfg):
                   elapsed * 1000 / cfg.training.log_interval, total_loss / cfg.training.log_interval,
                   total_pure_loss / cfg.training.log_interval))
 
-            # Saves the results in train_logs
-            with open(cfg.data.save_training_logs + "/" + cfg.data.save.split("/")[-1].split(".")[0] + ".res", "a") as res_file:
-                    res_file.write('| epoch {:3d} | {:5d}/{:5d} batches | ms/batch {:5.2f} | loss {:5.4f} | pure loss {:5.4f} \n'.format(
-                                   epoch_number, batch, len(data_train) // cfg.training.batch_size,
-                                   elapsed * 1000 / cfg.training.log_interval, total_loss / cfg.training.log_interval,
-                                   total_pure_loss / cfg.training.log_interval))  
-
             total_loss = 0
             total_pure_loss = 0
             start_time = time.time()
@@ -122,6 +115,13 @@ def train(epoch_number ,cfg):
     fmt = '| evaluation | time: {:5.2f}s | valid loss (pure) {:5.4f} | Acc {:8.4f}'
     print(fmt.format((time.time() - evaluate_start_time), val_loss, acc))
     print('-' * 89)
+
+    # Saves the results in train_logs
+    with open(cfg.data.save_training_logs + "/" + cfg.data.save.split("/")[-1].split(".")[0] + ".res", "a") as res_file:
+            res_file.write(fmt.format((time.time() - evaluate_start_time), val_loss, acc) + "\n")  
+
+
+
     # Save the model, if the validation loss is the best we've seen so far.
     if not best_val_loss or val_loss < best_val_loss:
         with open(cfg.data.save, 'wb') as f:
@@ -153,7 +153,7 @@ def train(epoch_number ,cfg):
 
 
 
-@hydra.main(config_name="config")
+@hydra.main(config_name="config_small")
 def main(cfg):
     print(get_config(cfg))
     # Set the random seed manually for reproducibility.

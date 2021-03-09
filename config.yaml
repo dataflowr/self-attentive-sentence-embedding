@@ -24,7 +24,7 @@ training:
     patience: 1 #the patience of 'ReduceLROnPlateau' when reducing the LR.
     step_size: 1 #the step of 'StepLR'
 
-  epochs: 1 #upper epoch limit
+  epochs: 20 #upper epoch limit
   log_interval: 20 #report interval
   batch_size: 50 #batch size for training
   penalization_coeff: 1 #the penalization coefficient

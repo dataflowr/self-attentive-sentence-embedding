@@ -12,7 +12,7 @@ model:
   dropout: 0.5 #dropout applied to layers (0 = no dropout)
   clip: 0.5 #clip to prevent the too large grad in LSTM
   nfc: 300 #hidden (fully connected) layer size for classifier MLP
-  require_checkpoint : True #Indicates if the model needs the use of checkpoints
+  require_checkpoint : False #Indicates if the model needs the use of checkpoints
 
 training:
   lr: .001 #initial learning rate
@@ -30,7 +30,7 @@ training:
   penalization_coeff: 1 #the penalization coefficient
 
 data:
-  save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/with_sched3.pkl" #path to save the final model
+  save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/with_sched4.pkl" #path to save the final model
   save_training_logs: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/train_logs" #path to save the training logs
   dictionary: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/dict_review_short.json" #path to save the dictionary, for faster corpus loading
   word_vector: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/content/glove.6B.200d.txt.pt" #path for pre-trained word vectors (e.g. GloVe), should be a PyTorch model.
