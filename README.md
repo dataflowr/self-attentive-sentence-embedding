@@ -2,7 +2,7 @@
 
 We submitted tree model.
 
--The first one called yelp_model is just a colab to train the model on all the yelp dataset
+-The first one called yelp_all_model.ipynb is just a colab to train the model on all the yelp dataset
 
 -The second one bert.ipynb is a bert one containing also a heatmap implementation.
 
