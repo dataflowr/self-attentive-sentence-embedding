@@ -14,6 +14,7 @@ ipython_config.py
 
 # Ignore Outputs
 outputs/
+train_logs/
 
 # Models
 models/
@@ -24,6 +25,7 @@ heatmaps/
 # Content and data:
 content/
 small/
+big/
 
 # Ignore the yaml config files:
 #.yaml

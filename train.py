@@ -101,10 +101,9 @@ def train(epoch_number ,cfg):
                   elapsed * 1000 / cfg.training.log_interval, total_loss / cfg.training.log_interval,
                   total_pure_loss / cfg.training.log_interval))
 
-
             # Saves the results in train_logs
-            with open("train_logs/" + cfg.data.save.split("/")[-1] + ".res", "a") as res_file:
-                    res_file.write('| epoch {:3d} | {:5d}/{:5d} batches | ms/batch {:5.2f} | loss {:5.4f} | pure loss {:5.4f}'.format(
+            with open(cfg.data.save_training_logs + "/" + cfg.data.save.split("/")[-1].split(".")[0] + ".res", "a") as res_file:
+                    res_file.write('| epoch {:3d} | {:5d}/{:5d} batches | ms/batch {:5.2f} | loss {:5.4f} | pure loss {:5.4f} \n'.format(
                                    epoch_number, batch, len(data_train) // cfg.training.batch_size,
                                    elapsed * 1000 / cfg.training.log_interval, total_loss / cfg.training.log_interval,
                                    total_pure_loss / cfg.training.log_interval))  
@@ -192,10 +191,10 @@ def main(cfg):
         'attention-unit': cfg.model.attention_unit,
         'attention-hops': cfg.model.attention_hops,
         'nfc': cfg.model.nfc,
+        'require_checkpoint': cfg.model.require_checkpoint,
         'dictionary': dictionary,
         'word-vector': cfg.data.word_vector,
-        'class-number': cfg.class_number,
-        'require_checkpoint': cfg.require_checkpoint
+        'class-number': cfg.class_number
     })
     if cfg.cuda:
         model = model.cuda()

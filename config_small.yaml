@@ -31,6 +31,7 @@ training:
 
 data:
   save: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/models/with_sched3.pkl" #path to save the final model
+  save_training_logs: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/train_logs" #path to save the training logs
   dictionary: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/dict_review_short.json" #path to save the dictionary, for faster corpus loading
   word_vector: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/content/glove.6B.200d.txt.pt" #path for pre-trained word vectors (e.g. GloVe), should be a PyTorch model.
   train_data: "/Data/pls_do_not_delete/Project-self-attentive-sentence-embedding/small/train_tok.json" #location of the training data, should be a json file
