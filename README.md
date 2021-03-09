@@ -11,6 +11,9 @@ We submitted tree model.
 We add :
 
 -a heatmap.py file where a base implementation approach of a heatmap is proposed 
+-sample.tex is a heatmap tex file for a sentence we try on the bert model
+
+TO visualize the heatmap, you need to copy the sample.tex in Overleaf application and compile it
 
 
 
