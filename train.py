@@ -73,6 +73,7 @@ def train(epoch_number ,cfg):
     start_time = time.time()
     for batch, i in enumerate(range(0, len(data_train), cfg.training.batch_size)):
         data, targets = package(data_train[i:i+cfg.training.batch_size])
+
         if cfg.cuda:
             data = data.cuda()
             targets = targets.cuda()
@@ -84,6 +85,7 @@ def train(epoch_number ,cfg):
             attentionT = torch.transpose(attention, 1, 2).contiguous()
             extra_loss = Frobenius(torch.bmm(attention, attentionT) - I[:attention.size(0)])
             loss += cfg.training.penalization_coeff * extra_loss
+
         optimizer.zero_grad()
         loss.backward()
 
@@ -98,6 +100,7 @@ def train(epoch_number ,cfg):
                   epoch_number, batch, len(data_train) // cfg.training.batch_size,
                   elapsed * 1000 / cfg.training.log_interval, total_loss / cfg.training.log_interval,
                   total_pure_loss / cfg.training.log_interval))
+
             total_loss = 0
             total_pure_loss = 0
             start_time = time.time()
@@ -112,15 +115,23 @@ def train(epoch_number ,cfg):
     fmt = '| evaluation | time: {:5.2f}s | valid loss (pure) {:5.4f} | Acc {:8.4f}'
     print(fmt.format((time.time() - evaluate_start_time), val_loss, acc))
     print('-' * 89)
+
+    # Saves the results in train_logs
+    with open(cfg.data.save_training_logs + "/" + cfg.data.save.split("/")[-1].split(".")[0] + ".res", "a") as res_file:
+            res_file.write(fmt.format((time.time() - evaluate_start_time), val_loss, acc) + "\n")  
+
+
+
     # Save the model, if the validation loss is the best we've seen so far.
     if not best_val_loss or val_loss < best_val_loss:
         with open(cfg.data.save, 'wb') as f:
             torch.save(model, f)
         f.close()
+        #torch.save(model.state_dict(), cfg.data.save)
         best_val_loss = val_loss
-    else:  # if loss doesn't go down, divide the learning rate by 5.
-        for param_group in optimizer.param_groups:
-            param_group['lr'] = param_group['lr'] * 0.2
+    #else:  # if loss doesn't go down, divide the learning rate by 5.
+        #for param_group in optimizer.param_groups:
+            #param_group['lr'] = param_group['lr'] * 0.2
     if not best_acc or acc > best_acc:
         with open(cfg.data.save[:-3]+'.best_acc.pt', 'wb') as f:
             torch.save(model, f)
@@ -130,9 +141,21 @@ def train(epoch_number ,cfg):
         torch.save(model, f)
     f.close()
 
+    if(cfg.training.scheduler.using_scheduler):
+        if(cfg.training.scheduler.name == "ReduceLROnPlateau"):
+            scheduler.step(val_loss)
+        elif cfg.training.scheduler.name == "StepLR":
+            scheduler.step()
 
-@hydra.main(config_name="config")
+    for param_group in optimizer.param_groups:
+        print(param_group['lr'])
+            
+
+
+
+@hydra.main(config_name="config_small")
 def main(cfg):
+    print(get_config(cfg))
     # Set the random seed manually for reproducibility.
     torch.manual_seed(cfg.seed)
     if torch.cuda.is_available():
@@ -143,6 +166,7 @@ def main(cfg):
     random.seed(cfg.seed)
 
     # Load Dictionary
+    print(cfg.data.train_data)
     assert os.path.exists(cfg.data.train_data)
     assert os.path.exists(cfg.data.val_data)
     print('Begin to load the dictionary.')
@@ -163,10 +187,11 @@ def main(cfg):
         'nlayers': cfg.model.nlayers,
         'nhid': cfg.model.nhid,
         'ninp': cfg.model.emsize,
-        'pooling': 'all',
+        'pooling': cfg.model.pooling,
         'attention-unit': cfg.model.attention_unit,
         'attention-hops': cfg.model.attention_hops,
         'nfc': cfg.model.nfc,
+        'require_checkpoint': cfg.model.require_checkpoint,
         'dictionary': dictionary,
         'word-vector': cfg.data.word_vector,
         'class-number': cfg.class_number
@@ -184,14 +209,31 @@ def main(cfg):
 
     global criterion 
     global optimizer
+
     criterion = nn.CrossEntropyLoss()
     if cfg.training.optimizer == 'Adam':
         optimizer = optim.Adam(model.parameters(), lr=cfg.training.lr, betas=[0.9, 0.999], eps=1e-8, weight_decay=0)
     elif cfg.training.optimizer == 'SGD':
         optimizer = optim.SGD(model.parameters(), lr=cfg.training.lr, momentum=0.9, weight_decay=0.01)
+    elif cfg.training.optimizer == 'RMSprop':
+        torch.optim.RMSprop(model.parameters(), lr=cfg.training.lr, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0, centered=False)
     else:
         raise Exception('For other optimizers, please add it yourself. '
-                        'supported ones are: SGD and Adam.')
+                        'supported ones are: SGD, Adam and RMSprop.')
+
+    # Scheduler initialization:
+    print(cfg.training.scheduler.name)
+    if cfg.training.scheduler.using_scheduler:
+        global scheduler
+        if cfg.training.scheduler.name == "ReduceLROnPlateau":
+            scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=cfg.training.scheduler.factor, patience=cfg.training.scheduler.patience, verbose=True, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08)
+        elif cfg.training.scheduler.name == "StepLR":
+            scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size = cfg.training.scheduler.step_size, gamma=0.1, last_epoch=-1, verbose=True)
+        else:
+            raise Exception('For other schedulers, please add it yourself. '
+                        'supported ones are: ReduceLROnPlateau and StepLR.')
+
+
     print('Begin to load data.')
     global data_train 
     data_train = open(cfg.data.train_data).readlines()

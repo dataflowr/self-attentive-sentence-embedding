@@ -2,4 +2,34 @@
 *.pyc
 __pycache__/
 
+nohup.out
 *.pt
+
+# Notebook gitignore template
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Ignore Outputs
+outputs/
+
+# Models
+models/
+
+# Ignore all the Heatmaps created
+heatmaps/
+
+# Content and data:
+content/
+small/
+big/
+
+# Ignore the yaml config files:
+#.yaml
+#*/.yaml/*
+
+# Remove previous ipynb_checkpoints
+#   git rm -r .ipynb_checkpoints/

@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import os
 
+from torch.utils.checkpoint import checkpoint
 
 class BiLSTM(nn.Module):
 
@@ -115,6 +116,7 @@ class Classifier(nn.Module):
         self.tanh = nn.Tanh()
         self.pred = nn.Linear(config['nfc'], config['class-number'])
         self.dictionary = config['dictionary']
+        self.require_checkpoint = config['require_checkpoint']
 #        self.init_weights()
 
     def init_weights(self, init_range=0.1):
@@ -124,7 +126,10 @@ class Classifier(nn.Module):
         self.pred.bias.data.fill_(0)
 
     def forward(self, inp, hidden):
-        outp, attention = self.encoder.forward(inp, hidden)
+        if(self.require_checkpoint):
+            outp, attention = checkpoint(self.encoder, inp, hidden)
+        else:
+            outp, attention = self.encoder.forward(inp, hidden)
         outp = outp.view(outp.size(0), -1)
         fc = self.tanh(self.fc(self.drop(outp)))
         pred = self.pred(self.drop(fc))
