@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 # @Author: Jie Yang
 # @Date:   2019-03-29 16:10:23
-# @Last Modified by:   Jie Yang,     Contact: jieynlp@gmail.com
-# @Last Modified time: 2019-04-12 09:56:12
+# @Last Modified by:   Tom Sander,     Contact: tomsander1998@gmail.com
+# @Last Modified time: 2021-03-12 
 
 
 ## convert the text/attention list to latex code, which will further generates the text heatmap based on attention weights.
 import numpy as np
 
+
 latex_special_token = ["!@#$%^&*()"]
+
 
 def generate(text_list, attention_list, latex_file, color='red', label=0, prediction=0, rescale_value = False, test=0):
     #print('label :', label, 'prediction :', prediction)
@@ -57,6 +59,7 @@ def clean_word(word_list):
 if __name__ == '__main__':
 	## This is a demo:
 
+	
 	sent = '''the USS Ronald Reagan - an aircraft carrier docked in Japan - during his tour of the region, vowing to "defeat any attack and meet any use of conventional or nuclear weapons with an overwhelming and effective American response".
 North Korea and the US have ratcheted up tensions in recent weeks and the movement of the strike group had raised the question of a pre-emptive strike by the US.
 On Wednesday, Mr Pence described the country as the "most dangerous and urgent threat to peace and security" in the Asia-Pacific.'''
