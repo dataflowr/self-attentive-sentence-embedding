@@ -6,6 +6,7 @@
 ![jupyter notebook x python](https://img.shields.io/badge/jupyter%20notebook-python-orange)![DeepLearning x DNN](https://img.shields.io/badge/DeepLearning-DNN-blue)![ML x Regressions](https://img.shields.io/badge/MachineLearning-Regressions-ff69b4)
 
 We worked relentlessly as a united team to understand and improve the neural network described in the paper [A Structured Self-attentive Sentence Embedding](https://arxiv.org/abs/1703.03130) by Lin et al. We started by extracting the attention matrix relevant to the yelp data and then applying Deep Learning concepts we learned through out the course to improve its performance.
+This worked was done under the supervizion of Professor Lelarge, during the Deep Learning class at Ecole Polytechnique. Inès Multrier, Tom Sander and Jean-Charles worked equally on the project.
 
 ## Path to original data
 
