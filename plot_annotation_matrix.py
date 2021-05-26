@@ -2,15 +2,15 @@
 # @Author: Jie Yang
 # @Date:   2019-03-29 16:10:23
 # @Last Modified by:   Tom Sander,     Contact: tomsander1998@gmail.com
-# @Last Modified time: 2021-03-12 
+# @Last Modified time: 2021-03-12
+
+#All the changes from the original code were made by Tom Sander, but added by JC Layoun in the repos.
 
 
 ## convert the text/attention list to latex code, which will further generates the text heatmap based on attention weights.
 import numpy as np
 
-
 latex_special_token = ["!@#$%^&*()"]
-
 
 def generate(text_list, attention_list, latex_file, color='red', label=0, prediction=0, rescale_value = False, test=0):
     #print('label :', label, 'prediction :', prediction)
@@ -39,8 +39,8 @@ def generate(text_list, attention_list, latex_file, color='red', label=0, predic
 \end{document}''')
 
 def rescale(input_list):
-	the_array = np.asarray(input_list)
-	the_max = np.max(the_array)
+	the_array= np.asarray(input_list)
+	the_max= np.max(the_array)
 	the_min = np.min(the_array)
 	rescale = (the_array - the_min)/(the_max-the_min)*100
 	return rescale.tolist()
@@ -59,7 +59,6 @@ def clean_word(word_list):
 if __name__ == '__main__':
 	## This is a demo:
 
-	
 	sent = '''the USS Ronald Reagan - an aircraft carrier docked in Japan - during his tour of the region, vowing to "defeat any attack and meet any use of conventional or nuclear weapons with an overwhelming and effective American response".
 North Korea and the US have ratcheted up tensions in recent weeks and the movement of the strike group had raised the question of a pre-emptive strike by the US.
 On Wednesday, Mr Pence described the country as the "most dangerous and urgent threat to peace and security" in the Asia-Pacific.'''
